@@ -1,0 +1,47 @@
+<div *ngInit gelAllArticle()></div>
+<div *ngIf="!charged; else blockcharged" class="center">
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+
+</div>
+<ng-template #blockcharged>
+<h1>Articles en stock</h1>
+<table class="table table-hover">
+  <thead>
+  <tr class='table-primary'>
+    <th scope="col">Nom</th>
+    <th hidden>ID</th>
+    <th scope="col">Détails</th>
+  </tr>
+  </thead>
+  <tbody *ngFor="let article of articles$; let index=index">
+      <tr>
+      <td>{{article.name}}</td>
+      <td hidden>{{article.id}}</td>
+      <td><button class="btn btn-secondary" (click)=details()>détails</button></td>
+      </tr>
+  </tbody>
+</table>
+
+<div **ngIf="newArticle">
+<form [formGroup]="newArticleForm" (submit)="createArticle()">
+  <div class="form-groupe row">
+      <label for="name" class="col-2 col-form-label">Nom</label>
+      <div class="col-10">
+          <input type="text" id ="name" class="form-control" formControlName="nameFC"/>
+      </div>
+  </div>
+
+  <div class="form-groupe row">
+      <input type="submit" class="btn btn-primary" value="S'inscrire"/>
+
+  </div>
+  </form>
+</div>
+
+<div *ngIf="!newArticle">
+
+<button class="btn btn-secondary" (click)=openCreatePanel()>Ajouter un article</button>
+<button>Ajouter un model d'article</button>
+
+</div>
+</ng-template>
