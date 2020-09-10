@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Article } from '../classes/article';
 import { map } from 'rxjs/operators';
+import { Message } from '../classes/message';
 
 
 @Injectable({
@@ -22,13 +23,11 @@ export class ArticleService {
         return articleList.map((article: Article) => {
           return new Article(article);
         });
-
       })
-
     );
   }
 
-  public postCreateOrUpdtateArticle(article): Observable<any> {
-    return this.http.post<string>(`${this.URL}/article/createOrUpdate`, article);
+  public postCreateOrUpdtateArticle(article){
+     this.http.post(`${this.URL}/article/createOrUpdate`, article);
 }
 }

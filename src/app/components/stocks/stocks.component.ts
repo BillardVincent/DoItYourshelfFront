@@ -3,6 +3,7 @@ import { Article } from 'src/app/classes/article';
 import { Subscription } from 'rxjs';
 import { ArticleService } from 'src/app/services/article.service';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { Message } from 'src/app/classes/message';
 
 @Component({
   selector: 'app-stocks',
@@ -11,43 +12,65 @@ import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 })
 export class StocksComponent implements OnInit {
   articles$: Article[];
-  charged: boolean;
+  //charged: boolean;
+  charged = true;
   newArticle: boolean;
-  private subscription : Subscription;
+  message : Message = {message : ''};
+  messagetxt: string;
+  private subscription: Subscription;
 
-  articleCreated : Article;
-  newArticleForm : FormGroup;
-  name : FormControl;
+  newArticleForm: FormGroup;
+  articleName: FormControl;
+
+  art = {
+    id: 0,
+    name: '',
+    alias: ''
+  };
+  articleCreated = this.art;
 
 
-
-
-  constructor(private articleService: ArticleService, private formBuilder: FormBuilder) { }
+  constructor(private articleService: ArticleService, private formBuilder: FormBuilder) {
+    this.loadForm();
+  }
 
   ngOnInit(): void {
     this.getAllArticles();
   }
-
-  getAllArticles(){
+  private loadForm() {
+    this.articleName = new FormControl('');
+    this.newArticleForm = this.formBuilder.group({
+      nameFC: this.articleName
+    })
+  }
+  getAllArticles() {
     this.subscription = this.articleService.getAllArticles().subscribe(
-      (data: Article[])=>{
-        this.articles$=data;
+      (data: Article[]) => {
+        this.articles$ = data;
         this.charged = true;
       }
     )
+    console.log('allArt');
   }
 
-  details(){
+  details() {
 
   }
-openCreatePanel(){
-this.newArticle = !this.newArticle;
-}
+  openCreatePanel() {
+    this.newArticle = !this.newArticle;
+  }
 
-createArticle(){
-this.articleCreated.name = name;
-  this.articleService.postCreateOrUpdtateArticle(this.articleCreated)
-}
+  createArticle() {
+    console.log(this.newArticleForm);
+    this.articleCreated.name = this.articleName.value;
+    console.log(this.articleCreated.name);
+    this.newArticle = !this.newArticle;
+    this.articleService.postCreateOrUpdtateArticle(this.articleCreated);
+        this.newArticle = !this.newArticle;
+        console.log('paf');
+
+    this.getAllArticles();
+  }
 
   ngOnDestroy(): void {
     // eviter les fuites de memoires
