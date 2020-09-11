@@ -24,11 +24,11 @@ export class ArticleService {
         });
 
       })
-
     );
   }
 
-  public postCreateOrUpdtateArticle(article): Observable<any> {
-    return this.http.post<string>(`${this.URL}/article/createOrUpdate`, article);
-}
+  public postCreateOrUpdtateArticle(article: Article): Observable<any> {
+    return (this.http.post(`${this.URL}/article/createOrUpdate`, article));
+
+  }
 }
