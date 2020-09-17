@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Article } from '../classes/article';
 import { map } from 'rxjs/operators';
+import { ArticleDetailed } from '../classes/article-detailed';
 
 
 @Injectable({
@@ -25,6 +26,9 @@ export class ArticleService {
 
       })
     );
+  }
+  public getArticle(articleId: number): Observable<ArticleDetailed> {
+    return this.http.get<ArticleDetailed>(`${this.URL}/article/details/${articleId}`);
   }
 
   public postCreateOrUpdtateArticle(article: Article): Observable<any> {

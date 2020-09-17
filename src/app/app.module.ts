@@ -24,6 +24,14 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatButtonModule } from "@angular/material/button";
+import {MatListModule} from '@angular/material/list';
+import { PopupArticleComponent } from './components/popup-article/popup-article.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PopupArtPatternComponent } from './components/popup-art-pattern/popup-art-pattern.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+
+
 
 @NgModule({
   declarations: [
@@ -38,6 +46,8 @@ import { MatButtonModule } from "@angular/material/button";
     WarehouseComponent,
     StocksComponent,
     ShoppingComponent,
+    PopupArticleComponent,
+    PopupArtPatternComponent,
 
   ],
   imports: [
@@ -53,7 +63,13 @@ import { MatButtonModule } from "@angular/material/button";
     MatRadioModule,
     MatProgressBarModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatSelectModule,
+
+    FontAwesomeModule
+
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

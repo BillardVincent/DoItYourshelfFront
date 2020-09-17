@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { TokenStorageServiceService } from './services/token-storage-service.service';
+import { ToolsService } from './services/tools.service';
+import { faHome, faUser, faWarehouse, faClipboardList, faSignInAlt, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +10,12 @@ import { TokenStorageServiceService } from './services/token-storage-service.ser
 })
 export class AppComponent {
   title = 'DoItYourShelfFront';
+  faHome = faHome;
+  faUser = faUser;
+  faWarehouse = faWarehouse;
+  faClipboard = faClipboardList;
+  faSignInAlt = faSignInAlt;
+  faSignOutAlt = faSignOutAlt;
 
 
 private roles: string[];
@@ -16,7 +24,7 @@ showAdminBoard = false;
 showModeratorBoard = false;
 username: string;
 
-constructor(private tokenStorageService: TokenStorageServiceService) { }
+constructor(private tokenStorageService: TokenStorageServiceService, private toolsService: ToolsService) { }
 
 ngOnInit() {
   this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -29,6 +37,8 @@ ngOnInit() {
     this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
 
     this.username = user.username;
+    this.toolsService.loadLocalStorage();
+
   }
 }
 

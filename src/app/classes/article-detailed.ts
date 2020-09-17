@@ -1,12 +1,14 @@
-export class ArticlePattern {
-
+export class ArticleDetailed {
   id: number;
   name: string;
-  formatId: number;
-
-
+  alias: string;
+  
 
   constructor(obj: object) {
     Object.assign(this, obj);
   }
+
+
+
+
 }

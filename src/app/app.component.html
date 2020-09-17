@@ -1,37 +1,38 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark">
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a href="#" class="navbar-brand">DoItYourshelf</a>
+<nav class="navbar navbar-expand navbar-dark bg-dark mat-typography">
+    <a href="#" class="navbar-brand">PAPPAC<br/><p class="petit"> Petit Assistant <br/> Pour Projets <br/>Amateurs et Créatifs </p></a>
     <ul class="navbar-nav mr-auto" routerLinkActive="active">
       <li class="nav-item">
-        <a href="/home" class="nav-link" routerLink="home">Home </a>
+      <a href="/home" class="nav-link" routerLink="home"> <fa-icon [icon]="faHome"></fa-icon> <br/> Accueil </a>
+      </li>
+      <li class="nav-item" *ngIf="isLoggedIn" >
+        <a href="/stocks" class="nav-link" routerLink="stocks"> <fa-icon [icon]="faWarehouse"></fa-icon> <br/> Stocks</a>
+      </li>
+      <li class="nav-item" *ngIf="isLoggedIn" >
+        <a href="/projets" class="nav-link" routerLink="projects"> <fa-icon [icon]="faClipboard"></fa-icon> <br/>
+        Projets</a>
       </li>
     </ul>
 
     <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
       <li class="nav-item">
-        <a href="/signin" class="nav-link" routerLink="signin">Sign Up</a>
+        <a href="/signin" class="nav-link" routerLink="signin">S'inscrire</a>
       </li>
       <li class="nav-item">
-        <a href="/login" class="nav-link" routerLink="login">Login</a>
+        <a href="/login" class="nav-link" routerLink="login"> <fa-icon [icon]="faSignInAlt"></fa-icon> <br/>Connexion</a>
       </li>
-
     </ul>
 
     <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
       <li class="nav-item">
-        <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+        <a href="/profile" class="nav-link" routerLink="profile"> <fa-icon [icon]="faUser"></fa-icon> <br/>{{ username }}</a>
       </li>
       <li class="nav-item">
-        <a href class="nav-link" (click)="logout()">LogOut</a>
-      </li>
-      <li class="nav-item">
-        <a href="/stocks" class="nav-link" routerLink="stocks">Stocks</a>
+        <a href class="nav-link" (click)="logout()"><fa-icon [icon]="faSignOutAlt"></fa-icon> <br/> Déconnexion</a>
       </li>
     </ul>
   </nav>
-
-
-</nav>
 <div class="container">
+  <body class="mat-typography">
   <router-outlet></router-outlet>
+</body>
 </div>
