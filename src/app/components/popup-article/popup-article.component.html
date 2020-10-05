@@ -1,18 +1,66 @@
+<div *ngIf="!charged; else blockcharged" class="center">
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+</div>
+<ng-template #blockcharged>
 
-<mat-list>
-Type: {{article.artPatName}}
-<br/>
-<br/>
-  Nom : {{article.name}}
-  <br/>
-  <br/>
-  Alias: {{article.alias}}
-  <br/>
-  <br/>
+  <div *ngIf="!editArticle">
+    <mat-list>
+      Type : {{article.artPatName}}
+      <br />
+      <br />
+      Nom : {{article.name}}
+      <br />
+      <br />
+      Description : {{article.alias}}
+      <br />
+      <br />
+    </mat-list>
+    <div *ngIf="!delete">
+    <button mat-flat-button color="primary" (click)="editThisArticle()"> Modifier </button>
+    <button mat-flat-button color="warn" (click)="delete = true"> Supprimer </button>
+    <br/>
+    <mat-dialog-actions class="text-center">
+      <button mat-flat-button color="accent" matDialogClose>Fermer</button>
+    </mat-dialog-actions>
+  </div>
+    <div *ngIf="delete">
+      <strong>Voulez vous vraiment supprimer cet élément ?</strong><br/>
+      <button mat-flat-button color="accent" (click)="delete = false"> Annuler </button>
+      <button mat-flat-button color="warn" (click)="deleteArticle()"> Supprimer </button>
+    </div>
+  </div>
+  
+  <div *ngIf="editArticle">
+    Modification en cours
+    <form [formGroup]="editArticleForm" (submit)="edit()">
+      <div class="form-groupe row">
+        <label for="name" class="col-2 col-form-label">Nom</label>
+        <div class="col-10">
+          <input type="text" id="name" class="form-control" formControlName="nameFC" />
+        </div>
+      </div>
+      <div class="form-groupe row">
+        <label for="alias" class="col-2 col-form-label">Description</label>
+        <div class="col-10">
+          <input type="text" id="alias" class="form-control" formControlName="aliasFC" />
+        </div>
+      </div>
+      <mat-form-field appearance="fill">
+        <mat-label for="pattern" class="col-2 col-form-label">Format</mat-label>
+        <mat-select id="pattern" formControlName="patternIdFC">
+          <mat-option *ngFor="let articlePattern of artPattern$" [value]="articlePattern.id">{{articlePattern.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br />
+      <div class="form-groupe row">
+        <input mat-flat-button class="btn" color="primary" type="submit" value="Modifier" />
+      </div>
+
+    </form>
+
+    <button mat-flat-button color="accent" (click)="cancel()"> Annuler </button>
+  </div>
 
 
-  <br/>
-</mat-list>
-<mat-dialog-actions class= "text-center">
-  <button mat-flat-button color="primary" matDialogClose>Fermer</button>
-</mat-dialog-actions>
+</ng-template>

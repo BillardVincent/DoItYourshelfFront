@@ -30,7 +30,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PopupArtPatternComponent } from './components/popup-art-pattern/popup-art-pattern.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
-
+import {MatInputModule} from '@angular/material/input';
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatListModule,
     MatFormFieldModule,
     MatSelectModule,
-
+    MatInputModule,
+    MatTableModule,
     FontAwesomeModule
 
   ],

@@ -33,7 +33,9 @@ export class PopupArtPatternComponent implements OnInit {
   patternName: FormControl;
   id: FormControl;
   formats: Format[];
-  formatSelected: Format = {id: 0, name: '', unit: ''};
+  formatSelected: Format = {id: 0, name: '', unit: '', unitName: '', nbDimension: 0};
+
+  error: boolean;
 
   ngOnInit(): void {
     this.loadFormPattern();
@@ -49,13 +51,19 @@ export class PopupArtPatternComponent implements OnInit {
     });
   }
 
+  onError() {
+
+  }
+  
   createPattern(){
     this.artPattern = { id: 0, name: this.patternName.value, formatId: this.id.value};
     this.artPatternService.postCreateOrUpdtateArtPattern(this.artPattern).subscribe(
       (() => {
-        this.snackBar.open(`Modèle d'article créé !`, 'OK');
+        this.snackBar.open(`Modèle d'article créé !`, 'OK', {duration: 2000});
         this.dialogRef.close();
-      })
+      }),
+      (error => this.error = error
+      )
     );
   }
 

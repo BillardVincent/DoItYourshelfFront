@@ -9,7 +9,7 @@
         <mat-label for="patternFormat" class="col-2 col-form-label">Format</mat-label>
         <mat-select id="patternFormat" formControlName="id">
           <mat-option *ngFor="let formatSelected of formats" [value]="formatSelected.id">{{formatSelected.name}} (
-            {{formatSelected.unit}} )</mat-option>
+            {{formatSelected.unitName}} )</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

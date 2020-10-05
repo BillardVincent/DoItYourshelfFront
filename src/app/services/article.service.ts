@@ -11,13 +11,13 @@ import { ArticleDetailed } from '../classes/article-detailed';
 })
 export class ArticleService {
 
-  private readonly URL = `http://localhost:8080`;
+  private readonly URL = `http://localhost:8080/article`;
   constructor(private http: HttpClient) { }
 
   public getAllArticles(): Observable<Article[]> {
     // get, put post renvoient tjs un observable
     // pipe de rx.js => observables
-    return this.http.get<Article[]>(`${this.URL}/article`).pipe(
+    return this.http.get<Article[]>(`${this.URL}`).pipe(
       // map permet de faire des opérations sur la listes
       map((articleList: Article[]) => {
         return articleList.map((article: Article) => {
@@ -28,11 +28,17 @@ export class ArticleService {
     );
   }
   public getArticle(articleId: number): Observable<ArticleDetailed> {
-    return this.http.get<ArticleDetailed>(`${this.URL}/article/details/${articleId}`);
+    return this.http.get<ArticleDetailed>(`${this.URL}/details/${articleId}`);
   }
 
   public postCreateOrUpdtateArticle(article: Article): Observable<any> {
-    return (this.http.post(`${this.URL}/article/createOrUpdate`, article));
+    return (this.http.post(`${this.URL}/createOrUpdate`, article));
+  }
+
+  public getDeleteArticle(id: number): Observable<any> {
+    console.log(`in delete function`);
+
+    return (this.http.get(`${this.URL}/delete/${id}`));
 
   }
 }

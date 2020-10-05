@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ArticlePattern } from 'src/app/classes/article-pattern';
 import { ArticlePatternService } from 'src/app/services/article-pattern.service';
 import { PopupArtPatternComponent } from '../popup-art-pattern/popup-art-pattern.component';
+import { Format } from 'src/app/classes/format';
 
 @Component({
   selector: 'app-stocks',
@@ -21,7 +22,12 @@ export class StocksComponent implements OnInit {
   newArticle: boolean;
   private subscription: Subscription;
   isNewPattern: boolean;
+  artPatName: string;
+  dimensionDisplay: string;
+  formatDisplay: Format = {id: 0, name: '', unitName : '', nbDimension: 0, unit: ''};
+  transitoryFormatDisplay: Format = {id: 0, name: '', unitName : '', nbDimension: 0, unit: ''};
 
+  format$: Format[];
   art = {
     id: 0,
     name: '',
@@ -45,13 +51,16 @@ export class StocksComponent implements OnInit {
 
   newArticleForm: FormGroup;
   name: FormControl;
-
+  patternId: FormControl;
+  alias: FormControl;
+  quantity1: FormControl;
+  quantity2: FormControl;
+  quantity3: FormControl;
 
   newPatternForm: FormGroup;
   patternName: FormControl;
-  patternId: FormControl;
 
-
+  private readonly PATTERN = 'pattern';
 
 
   constructor(
@@ -62,32 +71,43 @@ export class StocksComponent implements OnInit {
     private snackBar: MatSnackBar) {
 
     this.loadFormArticle();
-    //this.loadFormPattern();
+    this.loadAllArticlePattern();
+   // this.getStocks()
 
   }
+
 
   ngOnInit(): void {
     this.getAllArticles();
   }
-/*
-  loadFormPattern() {
-    this.name = new FormControl('', [Validators.required, Validators.minLength(3)]);
-    this.patternId = new FormControl('', [Validators.required]);
 
-    this.newPatternForm = this.formBuilder.group({
-      nameFC: this.name,
-      patternId: this.patternId
-    });
-  }
-  */
   private loadFormArticle() {
     this.name = new FormControl('', [Validators.required, Validators.minLength(3)]);
-    this.patternId = new FormControl('', [Validators.required]);
+    this.alias = new FormControl('', );
+    this.patternId = new FormControl('', );
+    this.quantity1 = new FormControl('', [Validators.min(0)]);
+    this.quantity2 = new FormControl('', [Validators.min(0)]);
+    this.quantity3 = new FormControl('', [Validators.min(0)]);
     this.newArticleForm = this.formBuilder.group({
       nameFC: this.name,
-      patternId: this.patternId
+      patternId: this.patternId,
+      alias: this.alias,
+      quantity1: this.quantity1,
+      quantity2: this.quantity2,
+      quantity3: this.quantity3,
+
     });
   }
+  /*
+  getStocks() {
+    this.subscription = this.projectService.getstocks().subscribe(
+      (data: Article[]) => {
+        this.articles$ = data;
+        this.charged = true;
+      }
+    );
+  }
+  */
 
   getAllArticles() {
     this.subscription = this.articleService.getAllArticles().subscribe(
@@ -103,35 +123,82 @@ export class StocksComponent implements OnInit {
   }
 
   openCreatePanel() {
-    this.newArticle = !this.newArticle;
-    this.loadAllArticlePattern();
+    this.newArticle = true;
+  }
+
+  formatDetermination(): Format|boolean{
+  if (this.patternId.touched){
+    this.transitoryFormatDisplay = {id: 0, name: '', unitName : '', nbDimension: 0, unit: ''};
+    this.formatDisplay = {id: 0, name: '', unitName : '', nbDimension: 0, unit: ''};
+    //console.log('détermination : ' + this.patternId.value);
+    this.format$ = JSON.parse(localStorage.getItem('formats'));
+    this.artPattern$.forEach(artPat => {
+     // console.log( 'allArtPat : name -> ' + artPat.name +' id -> '+ artPat.id + ' formatId -> ' +artPat.formatId);
+      if (artPat.id === this.patternId.value){
+        this.transitoryFormatDisplay.id = artPat.formatId;
+        //console.log( 'inside 1st loop : name -> ' + artPat.name +' id -> '+ artPat.id + ' formatId -> ' +artPat.formatId);
+        //console.log( 'inside 1st loop ' + this.transitoryFormatDisplay.id);
+        this.format$.forEach(form =>{
+          if (form.id === this.transitoryFormatDisplay.id){
+            this.formatDisplay = form;
+           // console.log( 'check');
+          } else {
+            //console.log('false1');
+            };
+        });
+      }
+    });
+  }
+  else {
+    //console.log('false2');
+  };
+  if (this.formatDisplay.unit !== ''){
+  //console.log( 'end of method' + this.formatDisplay.unit);
+  return this.formatDisplay;
+  }
+  else{
+    return false;
+  }
+  }
+
+  cancel() {
+    this.newArticle = false;
   }
 
   createArticle() {
-    this.articleCreated = {id:0, name: this.name.value, alias: '', artPatId: this.patternId.value, artPatName: ''};
-   // this.articleCreated.name = this.name.value;
-    // this.articleCreated.artPatId = this.patternId.value;
+    this.artPattern$.forEach(artPat => {
+      if (artPat.id === this.patternId.value){
+        this.artPatName = artPat.name;
+      }
+    });
+    this.articleCreated = {
+      id: 0, name: this.name.value,
+      alias: this.alias.value,
+      artPatId: this.patternId.value,
+      artPatName: this.artPatName,
+      projectId: 0,
+      qOfArtId: 0,
+      quantity1: this.quantity1.value,
+      quantity2: this.quantity2.value,
+      quantity3: this.quantity3.value,
+
+    };
     this.charged = false;
     this.articleService.postCreateOrUpdtateArticle(this.articleCreated).subscribe(
       (() => {
-        this.snackBar.open('Article créé !', 'OK');
+        this.snackBar.open('Article créé !', 'OK', {duration: 2000});
         this.getAllArticles();
       })
     );
     this.newArticle = !this.newArticle;
   }
 
-/*
-  selectArtPattern(articlePattern: number){
-    this.artPatSelected.id = articlePattern;
-  }
-*/
-
   loadAllArticlePattern(){
     this.subscription = this.articlePatternService.getAllPattern().subscribe(
       (data: ArticlePattern[]) => {
         this.artPattern$ = data;
         this.charged = true;
+        localStorage.setItem(this.PATTERN, JSON.stringify(this.artPattern$));
       }
     );
   }
@@ -144,16 +211,22 @@ export class StocksComponent implements OnInit {
     dialogConfig.data = {
       articleId : this.articleId
     };
-    this.dialog.open(PopupArticleComponent, dialogConfig);
+    this.subscription = this.dialog.open(PopupArticleComponent, dialogConfig).afterClosed().subscribe(
+      (data : boolean) => {
+        if (data){
+          console.log('in stock, after popup');
+          this.charged = false;
+          this.getAllArticles();
+        }}
+    );
+
   }
 
   createPatternPop(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-
     const dialogRef = this.dialog.open(PopupArtPatternComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(result => {
       this.isNewPattern = result;
       if (this.isNewPattern) {
@@ -164,7 +237,6 @@ export class StocksComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    // eviter les fuites de memoires
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
