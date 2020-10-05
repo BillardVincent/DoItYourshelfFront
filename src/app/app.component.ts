@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TokenStorageServiceService } from './services/token-storage-service.service';
 import { ToolsService } from './services/tools.service';
-import { faHome, faUser, faWarehouse, faClipboardList, faSignInAlt, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faWarehouse, faClipboardList, faSignInAlt, faSignOutAlt, faUserEdit} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +16,7 @@ export class AppComponent {
   faClipboard = faClipboardList;
   faSignInAlt = faSignInAlt;
   faSignOutAlt = faSignOutAlt;
+  faUserEdit = faUserEdit;
 
 
 private roles: string[];

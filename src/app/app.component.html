@@ -15,7 +15,7 @@
 
     <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
       <li class="nav-item">
-        <a href="/signin" class="nav-link" routerLink="signin">S'inscrire</a>
+        <a href="/signin" class="nav-link" routerLink="signin"><fa-icon [icon]="faUserEdit"></fa-icon> <br/>S'inscrire</a>
       </li>
       <li class="nav-item">
         <a href="/login" class="nav-link" routerLink="login"> <fa-icon [icon]="faSignInAlt"></fa-icon> <br/>Connexion</a>

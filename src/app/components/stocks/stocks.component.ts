@@ -130,30 +130,20 @@ export class StocksComponent implements OnInit {
   if (this.patternId.touched){
     this.transitoryFormatDisplay = {id: 0, name: '', unitName : '', nbDimension: 0, unit: ''};
     this.formatDisplay = {id: 0, name: '', unitName : '', nbDimension: 0, unit: ''};
-    //console.log('détermination : ' + this.patternId.value);
     this.format$ = JSON.parse(localStorage.getItem('formats'));
     this.artPattern$.forEach(artPat => {
-     // console.log( 'allArtPat : name -> ' + artPat.name +' id -> '+ artPat.id + ' formatId -> ' +artPat.formatId);
       if (artPat.id === this.patternId.value){
         this.transitoryFormatDisplay.id = artPat.formatId;
-        //console.log( 'inside 1st loop : name -> ' + artPat.name +' id -> '+ artPat.id + ' formatId -> ' +artPat.formatId);
-        //console.log( 'inside 1st loop ' + this.transitoryFormatDisplay.id);
         this.format$.forEach(form =>{
           if (form.id === this.transitoryFormatDisplay.id){
             this.formatDisplay = form;
-           // console.log( 'check');
-          } else {
-            //console.log('false1');
-            };
+          }
         });
       }
     });
   }
-  else {
-    //console.log('false2');
-  };
+
   if (this.formatDisplay.unit !== ''){
-  //console.log( 'end of method' + this.formatDisplay.unit);
   return this.formatDisplay;
   }
   else{
@@ -181,7 +171,6 @@ export class StocksComponent implements OnInit {
       quantity1: this.quantity1.value,
       quantity2: this.quantity2.value,
       quantity3: this.quantity3.value,
-
     };
     this.charged = false;
     this.articleService.postCreateOrUpdtateArticle(this.articleCreated).subscribe(
@@ -219,7 +208,6 @@ export class StocksComponent implements OnInit {
           this.getAllArticles();
         }}
     );
-
   }
 
   createPatternPop(){
@@ -241,5 +229,4 @@ export class StocksComponent implements OnInit {
       this.subscription.unsubscribe();
     }
   }
-
 }
